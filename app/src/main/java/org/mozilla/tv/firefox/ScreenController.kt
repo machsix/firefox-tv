@@ -152,7 +152,10 @@ class ScreenController(private val sessionRepo: SessionRepo) {
         fragmentManager: FragmentManager,
         @VisibleForTesting(otherwise = NONE) currentActiveScreen: ActiveScreen? = _currentActiveScreen.value
     ): Boolean {
-        if (keyEvent.keyCode == KeyEvent.KEYCODE_MENU) {
+        if (keyEvent.keyCode == KeyEvent.KEYCODE_MENU || keyEvent.scanCode == 185) {
+            // Use `adb shell getevent -lt /dev/input/event5` to find the Linux Key Code Name
+            // Then convert the hex to dec and use scanCode to check
+            // I added CC button on Hisense TV here
             return when (keyEvent.action) {
                 KeyEvent.ACTION_DOWN -> handleMenu(fragmentManager)
                 else -> true // We swallow ACTION_UP to only handle the key event once.
